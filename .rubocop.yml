@@ -1,0 +1,4 @@
+require: rubocop-minitest
+
+Metrics/MethodLength:
+    Exclude: 'test/**/*'
