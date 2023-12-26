@@ -5,45 +5,40 @@ module FileSystem
   class Tree
     attr_reader :pretty_name, :root
 
-    def self.build
-      new
+    def self.build(path)
+      new(path)
     end
 
     private
 
-    def initialize
-      @root = Node.new(Dir.getwd)
-      @pretty_name = @root.name.split('/').last
+    def initialize(path)
+      @root = Node.new(path)
 
       traverse(@root)
     end
 
     def traverse(root)
-      nodes = Dir.children(Dir.getwd).difference(IGNORED_FILES)
+      nodes = Dir.children(Dir.new(root.path)).difference(IGNORED_FILES)
 
       until nodes.empty?
-        child = Node.new(nodes.first)
+        path = root.path + '/' + nodes.first
+        child = Node.new(path)
 
-        if File.directory?(child.name)
-          Dir.chdir(child.name)
-
-          traverse(child)
-        end
+        traverse(child) if File.directory?(path)
 
         root.children << child && nodes.shift
       end
-
-      Dir.chdir('..')
     end
 
     IGNORED_FILES = %w[.git .env .DS_Store].freeze
 
     # A representation of a file in the filesystem tree
     class Node
-      attr_accessor :name
+      attr_accessor :path, :pretty_name
 
-      def initialize(name)
-        @name = name
+      def initialize(path)
+        @path = path
+        @pretty_name = @path.split('/').last
       end
 
       def method_missing(method, *_args)
