@@ -41,17 +41,10 @@ module FileSystem
         @pretty_name = @path.split('/').last
       end
 
-      def method_missing(method, *_args)
-        if method == :children
-          singleton_class.class_eval { attr_accessor :name, :children }
-          instance_variable_set '@children', []
-        else
-          super
-        end
+      def children
+        @children ||= []
       end
 
-      def respond_to_missing?(method_name, include_private = false)
-        method_name == :children || super
       end
     end
   end
