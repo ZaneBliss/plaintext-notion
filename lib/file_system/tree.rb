@@ -45,6 +45,8 @@ module FileSystem
         @children ||= []
       end
 
+      def lines
+        @lines ||= File.read(path)
       end
     end
   end

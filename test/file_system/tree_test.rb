@@ -34,6 +34,20 @@ module FileSystem
       assert tree.root.pretty_name, 'empty_fs'
       assert_equal tree.root.instance_variable_defined?(:@children), false
     end
+
+    class NodeTest < Minitest::Test
+      def test_node
+        node = FileSystem::Tree::Node.new('test/fixtures/standard_fs/Fakefile')
+
+        assert_equal node.pretty_name, 'Fakefile'
+        assert_equal node.instance_variable_defined?(:@children), false
+        assert_equal node.instance_variable_defined?(:@lines), false
+
+        lines = node.lines
+
+        assert_equal node.instance_variable_defined?(:@lines), true
+        assert_includes lines, "OBJ = hellomake.o hellofunc.o\n"
+      end
+    end
   end
 end
-
