@@ -2,12 +2,13 @@
 
 require 'json'
 
+require_relative './block'
+
 module Api
   # Representation of a Page api resource
   class Page
     def initialize(node)
-      @pretty_name = node.pretty_name
-      @lines = node.lines
+      @node = node
     end
 
     def to_json(*_args)
@@ -27,36 +28,17 @@ module Api
     def properties
       {
         properties: {
-          title: {
-            title: [
-              type: 'text',
-              text: {
-                content: @pretty_name
-              }
-            ]
-          }
+          title: { title: [{ type: :text, text: { content: @node.pretty_name } }] }
         }
       }
     end
 
     def children
+      # Idea: a Line class could contain #to_ methods to create different kinds
+      # of lines
+      to_block = ->(line) { Block.new(line) }
       {
-        children: [
-          {
-            object: 'block',
-            type: 'paragraph',
-            paragraph: {
-              rich_text: [
-                {
-                  type: 'text',
-                  text: {
-                    content: @lines
-                  }
-                }
-              ]
-            }
-          }
-        ]
+        children: @node.lines.map(&to_block)
       }
     end
   end

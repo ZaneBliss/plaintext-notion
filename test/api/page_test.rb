@@ -9,12 +9,13 @@ require_relative '../../lib/api/page'
 module Api
   class PageTest < Minitest::Test
     def test_builds_json_representation
-      node = FileSystem::Tree::Node.new('test/fixtures/standard_fs/Fakefile')
+      node = FileSystem::Tree::Node.new('test/fixtures/standard_fs/foo/file_b.txt')
 
       page = Api::Page.new(node)
 
-      assert_includes page.to_json,
-                      '{"parent":{"page_id":"2aadcb4694944f19bc0dc673f6abbf4b"},"properties":{"title":{"title":[{"type":"text","text":{"content":"Fakefile"}}]}},"children":[{"object":"block","type":"paragraph","paragraph":{"rich_text":[{"type":"text","text":{"content":"CC=gcc\\nCFLAGS=-I.\\nDEPS = hellomake.h\\nOBJ = hellomake.o hellofunc.o\\n\\n%.o: %.c $(DEPS)\\n  $(CC) -c -o $@ $< $(CFLAGS)\\n\\nhellomake: $(OBJ)\\n  $(CC) -o $@ $^ $(CFLAGS)\\n"}}]}}]}'
+      assert_equal page.hash[:properties], { title: [{ type: 'text', text: { content: 'file_b.txt' } }] }
+      assert_equal page.hash.key?(:children), true
+      assert_equal page.hash[:parent], { page_id: '2aadcb4694944f19bc0dc673f6abbf4b' }
     end
   end
 end

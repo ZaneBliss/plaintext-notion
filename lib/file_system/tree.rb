@@ -46,7 +46,7 @@ module FileSystem
       end
 
       def lines
-        @lines ||= File.read(path)
+        @lines ||= File.new(@path).readlines
       end
     end
   end

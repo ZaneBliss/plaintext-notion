@@ -1,3 +1,14 @@
 # This is a file header
 
+> Quote!
+_Emphasizing this_
+*Is this bold*?
+- Number 1
+- This is another bullet point
+- And another
+
+1. Do this
+1. And this
+1. And another
+
 And some body text.
