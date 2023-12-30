@@ -1,4 +1,5 @@
 require: rubocop-minitest
 
-Metrics/MethodLength:
-    Exclude: 'test/**/*'
+AllCops:
+    Exclude:
+      - 'test/**/*'

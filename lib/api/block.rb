@@ -35,7 +35,9 @@ module Api
       [prefix, content]
     end
 
-    def infer_type(prefix) # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Naming/VariableNumber
+    # todo: possible refactor(s) extracting types or building factory
+    def infer_type(prefix)
       if prefix == ('#')
         :heading_1
       elsif prefix == ('##')
@@ -54,5 +56,6 @@ module Api
         :paragraph
       end
     end
+    # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Naming/VariableNumber
   end
 end
